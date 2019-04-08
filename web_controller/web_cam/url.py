@@ -4,6 +4,5 @@ from . import views
 app_name = 'web_cam'
 urlpatterns = [
     path('cam_data/', views.Cam_data, name="cam_data"),
-    path('cam_data2/', views.Cam_data2, name="cam_data2"),
     path('cam_home/', views.CamHome, name="cam_home"),
 ]

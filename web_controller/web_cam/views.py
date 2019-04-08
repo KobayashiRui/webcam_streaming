@@ -19,7 +19,6 @@ class VideoCamera():
     
     def get_frame(self):
         image = self.frame
-        image = cv2.cvtColor(image,cv2.COLOR_RGB2GRAY)
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
     
@@ -27,10 +26,10 @@ class VideoCamera():
         while True:
             (self.grabbed, self.frame) = self.video.read()
 
-cam = VideoCamera()
+cam = VideoCamera(0)
 
 #def gen(camera):
-def gen():
+def gen(cam):
     while True:
         frame = cam.get_frame()
         yield(b'--frame\r\n'
@@ -41,16 +40,7 @@ def gen():
 def Cam_data(request):
     try:
         print("cam_data")
-        return StreamingHttpResponse(gen(0), 
-            content_type="multipart/x-mixed-replace;boundary=frame")
-    except:
-        pass
-
-@gzip.gzip_page
-def Cam_data2(request):
-    try:
-        print("cam_data2")
-        return StreamingHttpResponse(gen(1), 
+        return StreamingHttpResponse(gen(cam), 
             content_type="multipart/x-mixed-replace;boundary=frame")
     except:
         pass
